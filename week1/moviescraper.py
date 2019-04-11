@@ -6,7 +6,6 @@ This script scrapes IMDB and outputs a CSV file with highest rated movies.
 """
 
 import csv
-import re
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -49,22 +48,24 @@ def extract_movies(dom):
         movieYear = movieTitle.find("span", {"class", "lister-item-year"})
         # get year only
         year = movieYear.string
+
         # year in numbers only (<--no brackets-->)
-        year = year[1:5]
+        year = year[-5:-1]
+        print(year)
 
 
         # navigate to Actors/Actresses element; tag: p, class: ""
         movieActors = movie.find_all("p", {"class", ""})
+
         # get actor/resses only, after text:Stars
         actorlist = []
         # iterate over movieActors
         for names in movieActors:
             # select actors only
-            actors = names.select("a[href*=st]")
+            actors = names.select('a[href*=st]')
             # select names of actors only
             for name_only in actors:
-                name_only = name_only.text
-                actorlist.append(name_only)
+                actorlist.append(name_only.text)
         # join actor names in list into 1 string
         actorlist = ', '.join(actorlist)
 
@@ -77,9 +78,10 @@ def extract_movies(dom):
         runtime = runtime[0:3]
 
 
-        # append all movie info to list
-        movieinfo.extend((title, rating, year, actorlist, runtime))
-        print(movieinfo)
+        # append all movie info to a dict, then append to list
+        moviedict = {"Title": title, "Rating": rating, "Year": year, "Actors": actorlist, "Runtime": runtime}
+
+        movieinfo.append(moviedict)
 
 
     # ADD YOUR CODE HERE TO EXTRACT THE ABOVE INFORMATION ABOUT THE
@@ -96,8 +98,9 @@ def save_csv(outfile, movies):
     """
     writer = csv.writer(outfile)
     writer.writerow(['Title', 'Rating', 'Year', 'Actors', 'Runtime'])
-
-    # ADD SOME CODE OF YOURSELF HERE TO WRITE THE MOVIES TO DISK
+    # write individual data to csv file
+    for movie in movies:
+        writer.writerow([movie["Title"], movie["Rating"], movie["Year"], movie["Actors"], movie["Runtime"]])
 
 
 def simple_get(url):
