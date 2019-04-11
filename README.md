@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Structuur (Structure)
 
-Elke opdracht zal worden geplaatst in een folder van de corresponderende week, geconstructureerd als Week_#
+Elke opdracht zal worden geplaatst in de folder Homework, waarin folders staan gegroepeerd per week, geconstructureerd als Week_#, met # als week nummer
 
 ### Test (Testing)
 
