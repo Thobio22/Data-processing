@@ -28,8 +28,7 @@ python *.py
 
 ## Auteurs (Authors)
 
-naam: Thomas Verouden
-student#: 10779272
+naam: Thomas Verouden (student#: 10779272)
 
 ## Dankwoord (Acknowledgments)
 
