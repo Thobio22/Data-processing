@@ -8,7 +8,7 @@ visualised population and country details
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 
 
 def clean(subdata):
