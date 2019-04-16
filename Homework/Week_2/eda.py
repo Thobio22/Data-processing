@@ -58,8 +58,8 @@ def plot_gdp(cleansed):
     # plot histogram
     cleansed['GDP ($ per capita) dollars'].plot.hist()
     plt.title("GDP in dollars per country")
-    plt.ylabel("GDP in dollars")
-    plt.xlabel("Country")
+    plt.ylabel("Number of Countries")
+    plt.xlabel("GDP in dollars")
     plt.show()
 
 
@@ -69,8 +69,7 @@ def plot_mortality(cleansed):
     """
     cleansed['Infant mortality (per 1000 births)'].boxplot()
     plt.title('Infant mortality (per 1000 births)')
-    plt.ylabel('infant mortality')
-    plt.xlabel('')
+    plt.ylabel('Number of infant mortality')
 
 
 
