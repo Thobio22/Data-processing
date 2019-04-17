@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# plaats hier afkortingen
 
 def clean(subdata):
     """
@@ -31,11 +32,11 @@ def clean(subdata):
     subdata['GDP ($ per capita) dollars'] = \
     subdata['GDP ($ per capita) dollars'].str.replace(' dollars', '')
 
+    # set GDP column to numeric values
     subdata['GDP ($ per capita) dollars'] = \
     pd.to_numeric(subdata['GDP ($ per capita) dollars'])
 
-    # set wrong data in frame to np.nan:
-    # the GDP value of Suriname will be set to np.nan due to incorrect values
+    # the GDP value of Suriname will be set to np.nan due to factually incorrect values
     subdata.at['GDP ($ per capita) dollars', 'Suriname'] = np.nan
 
     return subdata
@@ -69,7 +70,7 @@ def plot_mortality(cleansed):
     """
     cleansed['Infant mortality (per 1000 births)'].boxplot()
     plt.title('Infant mortality (per 1000 births)')
-    plt.ylabel('Number of infant mortality')
+    plt.ylabel('Infant mortality')
 
 
 
@@ -84,10 +85,9 @@ if __name__ == "__main__":
 
     # clean up the data
     cleansed = clean(subdata)
-    # print(cleansed)
 
     # calculate and visualise mean, median, mode for GDP
-    GDP = plot_gdp(cleansed)
+    plot_gdp(cleansed)
 
     # visualise infant mortality in a boxplot
-    mortality = plot_mortality(cleansed)
+    plot_mortality(cleansed)
