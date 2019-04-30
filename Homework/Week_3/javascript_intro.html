@@ -1,0 +1,86 @@
+<!--!/usr/bin/env python
+    Name: Thomas Verouden
+    Student number: 10779272
+
+    This file visualises the given json dataframe containing the strongest
+    gusts of window above Schiphol-Netherlands between 2008 and 2018
+  -->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Windstoten</title>
+  </head>
+  <body>
+    <title>Hoogste windstoten boven schiphol in het jaar 2018</title>
+    <canvas id='canvas_schiphol' width="300" height="200"></canvas>
+    <script>
+      console.log('hello, world');
+      var windstoten = "schiphol_windstoten.json";
+      var txtFile = new XMLHttpRequest();
+      txtFile.onreadystatechange = function() {
+        if (txtFile.readyState === 4 && txtFile.status == 200) {
+          console.log(JSON.parse(txtFile.responseText));
+
+          data = JSON.parse(txtFile.responseText);
+
+          // for (let key in data){
+          //   console.log(key);
+          //   console.log(data[key]['FXX']);
+          //   console.log(data[key])
+          // }
+
+          // createTransform()
+          drawCanvas(data);
+
+        }
+      }
+      txtFile.open("GET", windstoten);
+      txtFile.send();
+
+      // function createTransform(domain, range){
+      // 	// domain is a two-element array of the data bounds [domain_min, domain_max]
+      // 	// range is a two-element array of the screen bounds [range_min, range_max]
+      // 	// this gives you two equations to solve:
+      // 	// range_min = alpha * domain_min + beta
+      // 	// range_max = alpha * domain_max + beta
+      //  		// a solution would be:
+      //
+      //     var domain_min = domain[0]
+      //     var domain_max = domain[1]
+      //     var range_min = range[0]
+      //     var range_max = range[1]
+      //
+      //     // formulas to calculate the alpha and the beta
+      //    	var alpha = (range_max - range_min) / (domain_max - domain_min)
+      //     var beta = range_max - alpha * domain_max
+      //
+      //     // returns the function for the linear transformation (y= a * x + b)
+      //     return function(x){
+      //       return alpha * x + beta;
+      //     }
+      // }
+
+
+      function drawCanvas(data){
+
+        const canvas = document.getElementById('canvas_schiphol');
+        const ctx = canvas.getContext('2d');
+        ctx.lineWidth = 1;
+        keys = Object.keys(data);
+        ctx.moveTo(keys[0], data[keys[0]]['FXX'])
+        console.log(keys[0], data[keys[0]]['FXX'])
+
+        for (let i in keys){
+          ctx.lineTo(keys[i], data[keys[i]]['FXX'])
+          console.log(keys[i], data[keys[i]]['FXX'])
+        }
+
+      }
+
+    </script>
+
+  </body>
+</html>
