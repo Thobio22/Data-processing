@@ -11,107 +11,15 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <title>Windstoten</title>
+    <title>Index</title>
   </head>
   <body>
     <h3>Hoogste windstoten boven schiphol in het jaar 2018</h3>
-    <h4>Thomas Verouden
-    <canvas id='canvas_schiphol' width="1300" height="700"></canvas>
-    <script>
-      // console.log('hello, world');
-      var windstoten = "schiphol_windstoten.json";
-      var txtFile = new XMLHttpRequest();
-      txtFile.onreadystatechange = function() {
-        if (txtFile.readyState === 4 && txtFile.status == 200) {
-          // console.log(JSON.parse(txtFile.responseText));
+    <h4>Thomas Verouden</h4>
+    <h4>JavaScript intro</h4>
+    <h5>javascript_intro.html</h5>
 
-          let setXscale = createTransform([1, 365], [100, 1100]);
-          let setYscale = createTransform([0, 320], [550, 0]);
-
-          var data = JSON.parse(txtFile.responseText);
-          console.log(data)
-
-
-          // draw on canvas
-          const canvas = document.getElementById('canvas_schiphol');
-          const ctx = canvas.getContext('2d');
-          ctx.lineWidth = 0.8;
-          keys = Object.keys(data);
-
-          // draw x axis
-          ctx.moveTo(97,550);
-          ctx.lineTo(1050,550);
-
-          // draw y axis
-          ctx.moveTo(97, 30);
-          ctx.lineTo(97,550);
-
-          // put in axis labels
-          ctx.fillText('Dagen in het jaar 2018 (in nummers)', 500, 580);
-          ctx.save();
-          ctx.rotate(1.5 * Math.PI);
-          ctx.fillText('Hoogste windstootkracht (in 0.1 m/s)', -340 , 30);
-          ctx.restore();
-
-
-          var listXaxis = []
-          for (let number = 360; number > -1; number -= 30) {
-            listXaxis.push(number);
-          }
-
-
-          // place numbers on x-axis, indicating days of the year
-          listXaxis.forEach(function(cnd_x){
-            x_axis = setXscale(cnd_x);
-            ctx.fillText(cnd_x,x_axis, 570);
-            ctx.moveTo(x_axis, 540);
-            ctx.lineTo(x_axis, 560);
-
-          });
-
-
-          // place numbers on y-axis, indicating gusts of wind
-          var listYaxis = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360];
-          listYaxis.forEach(function(cnd_y){
-            y_axis = setYscale(cnd_y);
-            ctx.fillText(cnd_y,50,y_axis);
-            ctx.moveTo(100,y_axis);
-            ctx.lineTo(1100, y_axis);
-
-          });
-
-          ctx.moveTo(97, 450)
-          for (index in data){
-            x = setXscale(keys[index]);
-            y = setYscale(data[index]['FXX']);
-            ctx.lineTo(x, y);
-          };
-
-          ctx.stroke();
-
-        }
-      }
-      txtFile.open("GET", windstoten);
-      txtFile.send();
-
-      function createTransform(domain, range){
-
-          var domain_min = domain[0];
-          var domain_max = domain[1];
-          var range_min = range[0];
-          var range_max = range[1];
-
-          // formulas to calculate the alpha and the beta
-         	var alpha = (range_max - range_min) / (domain_max - domain_min);
-          var beta = range_max - alpha * domain_max;
-
-          // returns the function for the linear transformation (y= a * x + b)
-          return function(x){
-            return alpha * x + beta;
-          }
-      }
-
-    </script>
+    <h5>source: http://projects.knmi.nl/klimatologie/daggegevens/selectie.cgi</h5>
 
   </body>
 </html>
