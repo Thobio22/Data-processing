@@ -43,13 +43,12 @@ def clean(dataframe):
     # remove spaces from column names and content
     dataframe.columns = dataframe.columns.str.strip()
 
+    # change YYYYMMDD to days of the year
     date_debug = []
     for i in range(1, 366):
         date_debug.append(i)
 
     dataframe2 = {'YYYYMMDD': date_debug}
-    print(dataframe2)
-
     dataframe['YYYYMMDD'] = dataframe2['YYYYMMDD']
 
     return dataframe
@@ -62,7 +61,6 @@ if __name__ == "__main__":
 
     # import file_name
     file_name = argv[1]
-    print(file_name)
 
     # check if file_name == actual file in folder
     if file_name == False:
@@ -76,7 +74,6 @@ if __name__ == "__main__":
 
     # take subset from needed columns only: ONLY USE THIS IF NECESSARY!!
     dataframe = dataframe[['YYYYMMDD', 'FXX']]
-    print(dataframe)
 
     # convert the dataframe to JSON
     convert_to_json(dataframe)
