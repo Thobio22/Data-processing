@@ -18,6 +18,7 @@ https://thobio22.github.io/Data-processing/
 EDIT: ik heb heel lang vast gezeten wegens een typfout in de scaling voor mijn as en waardes. ik scalede de x-as met setYscale
 
 11:00, 2 MEI
+Juiste waardes kunnen aanroepen en plotten in de linechart.
 Het werkte, voor even, maar ik probeerde titels/opdracht naam toe te voegen, en toen deed de link het niet meer
 
 13:00, 2 MEI
