@@ -15,7 +15,7 @@
   </head>
   <body>
     <h3>Hoogste windstoten boven schiphol in het jaar 2018</h3>
-    <canvas id='canvas_schiphol' width="1200" height="600"></canvas>
+    <canvas id='canvas_schiphol' width="1300" height="600"></canvas>
     <script>
       // console.log('hello, world');
       var windstoten = "schiphol_windstoten.json";
@@ -24,7 +24,7 @@
         if (txtFile.readyState === 4 && txtFile.status == 200) {
           // console.log(JSON.parse(txtFile.responseText));
 
-          let setXscale = createTransform([1, 365], [100, 1200]);
+          let setXscale = createTransform([1, 365], [100, 1100]);
           let setYscale = createTransform([0, 320], [450, 0]);
 
           var data = JSON.parse(txtFile.responseText);
@@ -36,20 +36,19 @@
           keys = Object.keys(data);
 
           // draw x axis
-          ctx.moveTo(80,450);
+          ctx.moveTo(97,450);
           ctx.lineTo(1050,450);
 
           // draw y axis
-          ctx.moveTo(80, 50);
-          ctx.lineTo(80,450);
+          ctx.moveTo(97, 50);
+          ctx.lineTo(97,450);
 
           // put in axis labels
-          ctx.fillText('dagen in het jaar 2018 (in nummers)', 500, 520);
+          ctx.fillText('Dagen in het jaar 2018 (in nummers)', 500, 520);
           ctx.save();
           ctx.rotate(1.5 * Math.PI);
           ctx.fillText('Hoogste windstootkracht (in 0.1 m/s)', -340 , 30);
           ctx.restore();
-          ctx.stroke();
 
 
 
@@ -61,35 +60,44 @@
           // }
 
           var listXaxis = []
-          for (let number = 390; number > -1; number -= 30) {
+          for (let number = 360; number > -1; number -= 30) {
             listXaxis.push(number);
           }
           // console.log(listXaxis)
 
-
+          // place numbers on x-axis, indicating days of the year
           listXaxis.forEach(function(cnd_x){
-            x_axis = setYscale(cnd_x);
-            console.log(x_axis)
+            x_axis = setXscale(cnd_x);
+            // console.log(x_axis)
             ctx.fillText(cnd_x,x_axis, 470);
-            ctx.moveTo(x_axis, 50);
-            ctx.lineTo(x_axis, 60);
+            ctx.moveTo(x_axis, 440);
+            ctx.lineTo(x_axis, 460);
 
           });
-
 
 
           // place numbers on y-axis, indicating gusts of wind
           var listYaxis = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280];
           listYaxis.forEach(function(cnd_y){
             y_axis = setYscale(cnd_y);
+            console.log(y_axis)
             ctx.fillText(cnd_y,50,y_axis);
             ctx.moveTo(100,y_axis);
             ctx.lineTo(1200, y_axis);
 
           });
 
+          for (index in data['YYYYMMDD']){
+            y = setYscale(data['YYYYMMDD'][index])
+            x = setXscale(data[index]['FXX'])
+            ctx.lineTo(x,y);
+            console.log('this is x')
+            console.log(x)
+            console.log('this is x')
+            console.log(y)
+          };
 
-
+          ctx.stroke()
 
           // for (let date in keys){
           //     console.log(keys[date])
