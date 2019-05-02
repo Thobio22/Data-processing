@@ -1,0 +1,24 @@
+Explain the difference between the == operator and the === operator.
+    == 
+    Means 'equal to', but can also set equal to value of another type, due to the
+    fact that, if it is not equal, it tries to convert it to the others type first.
+
+    ===
+    When you do not want any type conversions to happen, you have another operator,
+    namely === . It  tests whether a value is precisely equal to the other. Useful
+    if you do not want unexpected type conversion
+
+
+Explain what a closure is. (Note that JavaScript programs use closures very often)
+    JavaScript variables can belong to the local or global scope.
+    Global variables can be made local (private) with closures.
+    A closure is a feature in JavaScript where an inner function has access to the outer (enclosing) function’s variables
+
+
+Explain what higher order functions are.
+    Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them
+
+
+Explain what a query selector is and give an example line of JavaScript that uses a query selector.
+    The querySelector() method returns the FIRST element that matches a specified CSS selector(s) in the document.
+    document.querySelector("p"); ==> get the first <p> element in the document

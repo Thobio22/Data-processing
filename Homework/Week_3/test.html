@@ -1,0 +1,48 @@
+<!--!/usr/bin/env python
+    Name: Thomas Verouden
+    Student number: 10779272
+
+    This file visualises the given json dataframe containing the strongest
+    gusts of window above Schiphol-Netherlands between 2008 and 2018
+  -->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>test huis</title>
+  </head>
+  <body>
+    <h3>Huis</h3>
+    <!-- <canvas id='canvas_schiphol' width="300" height="200"></canvas> -->
+    <canvas id="my-house" width="600" height="600"></canvas>
+    <script>
+      console.log('hello, world');
+
+      const canvas = document.getElementById('my-house');
+      const ctx = canvas.getContext('2d');
+
+      // Set line width
+      ctx.lineWidth = 10;
+
+      // Wall
+      ctx.strokeRect(100, 200, 150, 110);
+
+      // Door
+      ctx.fillRect(130, 190, 40, 60);
+
+      // Roof
+      ctx.moveTo(50, 140);
+      ctx.lineTo(150, 60);
+      ctx.lineTo(250, 140);
+      ctx.closePath();
+      ctx.stroke();
+
+      txtFile.open("GET", windstoten);
+      txtFile.send();
+
+    </script>
+
+  </body>
+</html>

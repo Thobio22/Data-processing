@@ -14,26 +14,95 @@
     <title>Windstoten</title>
   </head>
   <body>
-    <title>Hoogste windstoten boven schiphol in het jaar 2018</title>
-    <canvas id='canvas_schiphol' width="300" height="200"></canvas>
+    <h3>Hoogste windstoten boven schiphol in het jaar 2018</h3>
+    <canvas id='canvas_schiphol' width="1200" height="600"></canvas>
     <script>
-      console.log('hello, world');
+      // console.log('hello, world');
       var windstoten = "schiphol_windstoten.json";
       var txtFile = new XMLHttpRequest();
       txtFile.onreadystatechange = function() {
         if (txtFile.readyState === 4 && txtFile.status == 200) {
-          console.log(JSON.parse(txtFile.responseText));
+          // console.log(JSON.parse(txtFile.responseText));
 
-          data = JSON.parse(txtFile.responseText);
+          let setXscale = createTransform([1, 365], [100, 1200]);
+          let setYscale = createTransform([0, 320], [450, 0]);
 
-          // for (let key in data){
-          //   console.log(key);
-          //   console.log(data[key]['FXX']);
-          //   console.log(data[key])
+          var data = JSON.parse(txtFile.responseText);
+
+          // draw on canvas
+          const canvas = document.getElementById('canvas_schiphol');
+          const ctx = canvas.getContext('2d');
+          ctx.lineWidth = 0.8;
+          keys = Object.keys(data);
+
+          // draw x axis
+          ctx.moveTo(80,450);
+          ctx.lineTo(1050,450);
+
+          // draw y axis
+          ctx.moveTo(80, 50);
+          ctx.lineTo(80,450);
+
+          // put in axis labels
+          ctx.fillText('dagen in het jaar 2018 (in nummers)', 500, 520);
+          ctx.save();
+          ctx.rotate(1.5 * Math.PI);
+          ctx.fillText('Hoogste windstootkracht (in 0.1 m/s)', -340 , 30);
+          ctx.restore();
+          ctx.stroke();
+
+
+
+
+
+          // var listXaxis = []
+          // for (let number = 1; number < 365; number++) {
+          //   listXaxis.push(number);
           // }
 
-          // createTransform()
-          drawCanvas(data);
+          var listXaxis = []
+          for (let number = 390; number > -1; number -= 30) {
+            listXaxis.push(number);
+          }
+          // console.log(listXaxis)
+
+
+          listXaxis.forEach(function(cnd_x){
+            x_axis = setYscale(cnd_x);
+            console.log(x_axis)
+            ctx.fillText(cnd_x,x_axis, 470);
+            ctx.moveTo(x_axis, 50);
+            ctx.lineTo(x_axis, 60);
+
+          });
+
+
+
+          // place numbers on y-axis, indicating gusts of wind
+          var listYaxis = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280];
+          listYaxis.forEach(function(cnd_y){
+            y_axis = setYscale(cnd_y);
+            ctx.fillText(cnd_y,50,y_axis);
+            ctx.moveTo(100,y_axis);
+            ctx.lineTo(1200, y_axis);
+
+          });
+
+
+
+
+          // for (let date in keys){
+          //     console.log(keys[date])
+          //     console.log(getTime(keys[date]))
+          // }
+          // // keys = Date.getTime(keys)
+          // console.log(keys)
+          // ctx.moveTo(keys[0], data[keys[0]]['FXX'])
+          // console.log(keys[0], data[keys[0]]['FXX'])
+          //
+          // for (let i in keys){
+          //   ctx.lineTo(keys[i], data[keys[i]]['FXX'])
+          //   console.log(keys[i], data[keys[i]]['FXX'])
 
         }
       }
@@ -41,48 +110,20 @@
       txtFile.send();
 
       function createTransform(domain, range){
-        // data heeft bepaalde coordinaten, datacoordinaten naar schermcoordinaten omzetten
-        // voor elk data punt moet je schermcoordinaat vinden
 
-        
-
-      	// domain is a two-element array of the data bounds [domain_min, domain_max]
-      	// range is a two-element array of the screen bounds [range_min, range_max]
-      	// this gives you two equations to solve:
-      	// range_min = alpha * domain_min + beta
-      	// range_max = alpha * domain_max + beta
-       		// a solution would be:
-
-          var domain_min = domain[0]
-          var domain_max = domain[1]
-          var range_min = range[0]
-          var range_max = range[1]
+          var domain_min = domain[0];
+          var domain_max = domain[1];
+          var range_min = range[0];
+          var range_max = range[1];
 
           // formulas to calculate the alpha and the beta
-         	var alpha = (range_max - range_min) / (domain_max - domain_min)
-          var beta = range_max - alpha * domain_max
+         	var alpha = (range_max - range_min) / (domain_max - domain_min);
+          var beta = range_max - alpha * domain_max;
 
           // returns the function for the linear transformation (y= a * x + b)
           return function(x){
             return alpha * x + beta;
           }
-      }
-
-
-      function drawCanvas(data){
-
-        const canvas = document.getElementById('canvas_schiphol');
-        const ctx = canvas.getContext('2d');
-        ctx.lineWidth = 1;
-        keys = Object.keys(data);
-        ctx.moveTo(keys[0], data[keys[0]]['FXX'])
-        console.log(keys[0], data[keys[0]]['FXX'])
-
-        for (let i in keys){
-          ctx.lineTo(keys[i], data[keys[i]]['FXX'])
-          console.log(keys[i], data[keys[i]]['FXX'])
-        }
-
       }
 
     </script>

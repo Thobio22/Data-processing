@@ -1,4 +1,15 @@
-  STN,YYYYMMDD,  FXX
+# BRON: KONINKLIJK NEDERLANDS METEOROLOGISCH INSTITUUT (KNMI)
+# Opmerking: door stationsverplaatsingen en veranderingen in waarneemmethodieken zijn deze tijdreeksen van dagwaarden mogelijk inhomogeen! Dat betekent dat deze reeks van gemeten waarden niet geschikt is voor trendanalyse. Voor studies naar klimaatverandering verwijzen we naar de gehomogeniseerde reeks maandtemperaturen van De Bilt <http://www.knmi.nl/kennis-en-datacentrum/achtergrond/gehomogeniseerde-reeks-maandtemperaturen-de-bilt> of de Centraal Nederland Temperatuur <http://www.knmi.nl/kennis-en-datacentrum/achtergrond/centraal-nederland-temperatuur-cnt>.
+#
+#
+# STN      LON(east)   LAT(north)     ALT(m)  NAME
+# 240:         4.790       52.318      -3.30  SCHIPHOL
+#
+# YYYYMMDD = Datum (YYYY=jaar MM=maand DD=dag);
+# FXX      = Hoogste windstoot (in 0.1 m/s);
+#
+# STN,YYYYMMDD,  FXX
+#
   240,20080421,  140
   240,20080422,  120
   240,20080423,  100
@@ -247,7 +258,7 @@
   240,20081222,  150
   240,20081223,   70
   240,20081224,   90
-  240,200812,  120
+  240,20081225,  120
   240,20081226,  100
   240,20081227,  100
   240,20081228,   90
@@ -278,7 +289,7 @@
   240,20090122,  170
   240,20090123,  190
   240,20090124,   90
-  240,200901,  140
+  240,20090125,  140
   240,20090126,   80
   240,20090127,   60
   240,20090128,   70
@@ -309,7 +320,7 @@
   240,20090222,  110
   240,20090223,  120
   240,20090224,   80
-  240,200902,  130
+  240,20090225,  130
   240,20090226,  140
   240,20090227,  110
   240,20090228,   70
