@@ -28,6 +28,8 @@
           let setYscale = createTransform([0, 320], [450, 0]);
 
           var data = JSON.parse(txtFile.responseText);
+          console.log(data)
+
 
           // draw on canvas
           const canvas = document.getElementById('canvas_schiphol');
@@ -86,14 +88,13 @@
 
           });
           ctx.moveTo(97, 450)
-          ctx.lineTo(250, 250)
-          for (index in data['YYYYMMDD']){
-            y = setYscale(keys[index])
-            x = setXscale(data[index]['FXX'])
+          for (index in data){
+            x = setXscale(keys[index])
+            y = setYscale(data[index]['FXX'])
             ctx.lineTo(x, y);
             console.log('this is x')
             console.log(x)
-            console.log('this is x')
+            console.log('this is y')
             console.log(y)
           };
 
