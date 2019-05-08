@@ -2,8 +2,11 @@
     Name: Thomas Verouden
     Student number: 10779272
 
-    This file visualises the given json dataframe containing the ranking of marvel
-    movies based on gross income per movie (adjusted for ticket price inflation) in may 5th, 2019
+    COPY PASTE van index.html
+    wilt om een of andere rede niet als code werken in atom
+
+    Als dit niet werkt ==> in week_4/index.html
+                           uncomment rij 124 t/m 134 & 178+179 voor hetzelfde effect
   -->
 
 <!DOCTYPE html>
@@ -121,17 +124,17 @@
         var xAxis = d3.axisBottom(xScale)
         var yAxis = d3.axisLeft(yScale)
 
-        // // define interaction tooltip
-        // var tip = d3.tip()
-        //             .data(dataset)
-        //             .attr('class', 'd3-tip')
-        //             .offset([-10, 0])
-        //             .html(function(d) {
-        //               return d["Title"] + ": " + "<span style='color:green'>" + d["Adjusted Gross"] + "</span>";
-        //             });
-        //
-        // // make interactive animation work
-        // svg.call(tip);
+        // define interaction tooltip
+        var tip = d3.tip()
+                    .data(dataset)
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                      return d["Title"] + ": " + "<span style='color:green'>" + d["Adjusted Gross"] + "</span>";
+                     });
+
+        // make interactive animation work
+        svg.call(tip);
 
 
         // create the bars
@@ -175,8 +178,8 @@
                           return "#590202"
                         }
                       })
-                      // .on('mouseover', tip.show) // for animation
-                      // .on('mouseout', tip.hide);
+                      .on('mouseover', tip.show) // for animation
+                      .on('mouseout', tip.hide);
 
         // create x axis by calling on xAxis
         svg.append("g")

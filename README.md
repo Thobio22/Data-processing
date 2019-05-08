@@ -17,6 +17,9 @@ pip install -r requirements.txt
 ### Structuur (Structure)
 
 Elke opdracht zal worden geplaatst in de folder Homework, waarin folders staan gegroepeerd per week, geconstructureerd als Week_#, met # als week nummer
+Er is een link voor visualisatie van de opdrachten.
+
+link: https://thobio22.github.io/Data-processing/
 
 ### Test (Testing)
 
