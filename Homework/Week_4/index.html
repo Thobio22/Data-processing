@@ -1,7 +1,153 @@
+<!--!/usr/bin/env python
+    Name: Thomas Verouden
+    Student number: 10779272
+
+    This file visualises the given json dataframe containing the ranking of marvel
+    movies based on gross income per movie (adjusted for ticket price inflation) in may 5th, 2019
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="/d3/d3.js">
+    </script>
+    <script>
+      d3.select("head")
+        .append("title")
+        .text("Marvel movies ranking based on gross income");
+    </script>
+  </head>
+  <body>
+    <script type="text/javascript">
+    // global variables
+    var h = 600;
+    var w = 1200;
+    var barPad = 5
+    var highest_gross = 700000000
+    var chartPad = 100
+    // var gross_data = d3.json("/cleansed_marvel_gross.json");
+
+    // call on data, in which to plot the barchart itself
+    d3.json("/cleansed_marvel_gross.json").then(function(dataset){
+
+      // place in needed flavor text
+      d3.select("body")
+        .append("h2")
+        .text("Marvel movies gross income")
+        .style("color", "orange");
+      d3.select("body")
+        .append("h4")
+        .text("Thomas Verouden");
+      d3.select("body")
+        .append("h4")
+        .text("StudentID: 10779272");
+      d3.select("body")
+        .append("p")
+        .text("This bar chart made with D3 shows the gross income per marvel movie, \
+              with the income adjusted for ticket price inflation, due to the differce\
+              of release dates. This data was pulled from \
+              https://www.boxofficemojo.com/ at may 5th.")
+        .style("color", "grey");
+
+      // create the svg field
+      var svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+
+      // create x, y scaling for placing data in svg pixels
+      var yScale = d3.scaleLinear()
+                     .domain([0, highest_gross])
+                     .range([h - chartPad, chartPad]);
+      var xScale = d3.scaleLinear()
+                     .domain([0, 56])
+                     .range([chartPad, w - chartPad]);
+
+      // define x and y axis
+      var xAxis = d3.axisBottom(xScale)
+      var yAxis = d3.axisLeft(yScale)
+
+      // create the bars
+      var rect = svg.selectAll("rect")
+                    .data(dataset)
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d, i) {
+                      return xScale(i);
+                     })
+                    .attr("y", function(d) {
+                      return yScale(d["Adjusted Gross"]); // can use + for converting string to int
+                     })
+                    .attr("width", w / dataset.length - barPad)
+                    .attr("height", function(d) {
+                      return  (h - yScale(d["Adjusted Gross"]) - chartPad);
+                    })
+                    .attr("fill", function(d) {
+                      if (d["Adjusted Gross"] > 600000000) {
+                        return "#45e514";
+                      }
+                      else if (d["Adjusted Gross"] > 500000000) {
+                        return "#9ff224";
+                      }
+                      else if (d["Adjusted Gross"] > 400000000) {
+                        return "#d5f72a";
+                      }
+                      else if (d["Adjusted Gross"] > 300000000) {
+                        return "#ffc300";
+                      }
+                      else if (d["Adjusted Gross"] > 200000000) {
+                        return "#ff8800";
+                      }
+                      else if (d["Adjusted Gross"] > 100000000) {
+                        return "#ff6100";
+                      }
+                      else if (d["Adjusted Gross"] > 20000000) {
+                        return "#ff0c00";
+                      }
+                    });
+
+      // create x axis by calling on xAxis
+      svg.append("g")
+         .attr("class", "axis")
+         .attr("transform", "translate(0," + (h - chartPad) + ")")
+         .call(xAxis)
+
+      // create yAxis by calling on yAxis
+      svg.append("g")
+         .attr("class", "axis")
+         .attr("transform", "translate(" + chartPad + ",0)")
+         .call(yAxis)
+
+      // create chart Title
+      svg.append("text")
+         .attr("transform", "translate(100,0)")
+         .attr("x", 50)
+         .attr("y", 50)
+         .attr("font-size", "24px")
+         .text("Marvel movies ranking based on gross income");
+
+      // create x-axis label
+      svg.append("text")
+         .attr("class", "x label")
+         .attr("text-anchor", "end")
+         .attr("x", w / 2)
+         .attr("y", h - 50)
+         .text("Marvel movies ranking");
+
+      // create y-axis label
+      svg.append("text")
+         .attr("class", "y label")
+         .attr("text-anchor", "end")
+         .attr("y", 5)
+         .attr("dy", "1em")
+         .attr("transform", "rotate(-90)")
+         .text("Gross income (in American dollars)")
+
+    });
 
 
-<head>
-    <title>Page Title</title>
-    <script type="text/javascript" src="barscript.js"> 'waarom in de head?' </script>
+    </script>
 
-</head>
+  </body>
+</html>
