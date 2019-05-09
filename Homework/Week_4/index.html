@@ -62,7 +62,7 @@
 
     </style>
 
-    <script src="d3/d3.js"></script>
+    <script src="d3/d3.min.js"></script>
 
     <script src="d3-tip.js"></script>
 
@@ -122,17 +122,17 @@
         var xAxis = d3.axisBottom(xScale)
         var yAxis = d3.axisLeft(yScale)
 
-        // // define interaction tooltip
-        // var tip = d3.tip()
-        //             .data(dataset)
-        //             .attr('class', 'd3-tip')
-        //             .offset([-10, 0])
-        //             .html(function(d) {
-        //               return d["Title"] + ": $" + "<span style='color:green'>" + d["Adjusted Gross"] + "</span>";
-        //             });
-        //
-        // // make interactive animation work
-        // svg.call(tip);
+
+        // define interaction tooltip
+        var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                      return d["Title"] + ": $" + "<span style='color:green'>" + d["Adjusted Gross"] + "</span>";
+                    });
+
+        // make interactive animation work
+        svg.call(tip);
 
 
         // create the bars
@@ -140,6 +140,7 @@
                       .data(dataset)
                       .enter()
                       .append("rect")
+                      .attr("class", "bar")
                       .attr("x", function(d, i) {
                         return xScale(i);
                        })
@@ -176,8 +177,8 @@
                           return "#590202"
                         }
                       })
-                      // .on('mouseover', tip.show) // for animation
-                      // .on('mouseout', tip.hide);
+                      .on('mouseover', tip.show) // for animation
+                      .on('mouseout', tip.hide);
 
         // create x axis by calling on xAxis
         svg.append("g")
