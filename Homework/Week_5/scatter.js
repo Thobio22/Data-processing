@@ -2,23 +2,36 @@
 //     Name: Thomas Verouden
 //     Student number: 10779272
 //
-//     This file visualises the
+//     This file visualises the amount of teens in violent areas against the
+//     amount of teen pregnancies in a d3 scatterplot, with the Country GDP indicated by color.
+//
+//     source: stats.oecd.org --> CWB table
+//     python -m http.server 8888 &
+//     http://localhost:8888/scatter.html
 
-// python -m http.server 8888 &
-// http://localhost:8888/scatter.html
 
+// global variables
+var h = 600;
 
+var w = 600;
+
+var barPad = 5;
+
+var gdp_max = 90000;
+
+var data_limit = 50;
+
+var year = "2012";
+
+var chartPad = {
+  top: 100,
+  bottom: 100,
+  left: 100,
+  right: 100
+};
 
 
 window.onload = function() {
-  // global variables
-  var h = 600;
-  var w = 1200;
-  var barPad = 5
-  var limit = 100
-  var chartPad = 100
-
-
 
   var teensInViolentArea = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB11/all?startTime=2010&endTime=2017"
   var teenPregnancies = "https://stats.oecd.org/SDMX-JSON/data/CWB/AUS+AUT+BEL+BEL-VLG+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LTU+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+OAVG+NMEC+BRA+BGR+CHN+COL+CRI+HRV+CYP+IND+IDN+MLT+PER+ROU+RUS+ZAF.CWB46/all?startTime=1960&endTime=2017"
@@ -29,16 +42,11 @@ window.onload = function() {
 
   Promise.all(requests).then(function(response) {
 
-      vioArea = transformResponse(response[0]);
-      teenPreg = transformResponse(response[1]);
-      gdp = transformResponseGDP(response[2]);
+      var vioArea = transformResponse(response[0]);
 
-      // create the svg field
-      var svg = d3.select("body")
-                  .append("svg")
-                  .attr("width", w)
-                  .attr("height", h);
+      var teenPreg = transformResponse(response[1]);
 
+      var gdp = transformResponseGDP(response[2]);
 
 
       // console.log(vioArea);
@@ -53,105 +61,241 @@ window.onload = function() {
       };
 
       var vioCountry = Object.keys(vioArea);
+
       var pregCountry = Object.keys(teenPreg);
+
       var gdpCountry = Object.keys(gdp);
+
       // console.log(vioCountry);
       // console.log(pregCountry);
       // console.log(gdpCountry);
 
 
+      // add data from all datasets to full_dataset
+      full_dataset = addViolent(full_dataset, vioArea);
 
+      full_dataset = addPregnancy(full_dataset, teenPreg);
 
-      for (i in vioArea) {
-        for (j in vioArea[i]) {
-          // console.log(vioArea[i][j].Country)
-          let time = vioArea[i][j]["Time"];
-          if (time in full_dataset) {
-            // console.log(time);
-            full_dataset[time].push({
-              "Country": vioArea[i][j].Country,
-              "Vio": vioArea[i][j].Datapoint
-            });
+      full_dataset = addGDP(full_dataset, gdp);
 
-          };
-
-        };
-
-      };
-
-
-      for (k in teenPreg) {
-        // console.log(k)
-        for (l in teenPreg[k]) {
-          // console.log(teenPreg[k][l].Country)
-          let time = teenPreg[k][l]["Time"];
-          let country = teenPreg[k][l].Country
-          // console.log(time);
-          // console.log(county);
-          if (time in full_dataset){
-            // console.log(time);
-            full_dataset[time].forEach(function(tvk) {
-              if (tvk.Country == country) {
-                tvk["Preg"] = teenPreg[k][l].Datapoint
-              };
-
-            });
-
-          };
-
-        };
-
-      };
-
-
-      for (m in gdp) {
-        // console.log(k)
-        for (n in gdp[m]) {
-          // console.log(teenPreg[k][l].Country)
-          let time = gdp[m][n]["Year"];
-          let country = gdp[m][n].Country
-          // console.log(time);
-          // console.log(country);
-          if (time in full_dataset) {
-            // console.log(time);
-            full_dataset[time].forEach(function(kvt) {
-              if (kvt.Country == country) {
-                kvt["GDP"] = gdp[m][n].Datapoint
-              };
-
-            });
-
-          };
-
-        };
-
-      };
 
       // remove Country: "OECD - Average"
-      for (o in full_dataset) {
-        full_dataset[o].pop();
+      for (oecd in full_dataset) {
+        full_dataset[oecd].pop();
       };
 
+      // console.log(full_dataset)
+      // console.log(full_dataset[year]);
 
-      console.log(full_dataset);
+      // for (iterate in full_dataset[year]) {
+      //   console.log(iterate);
+      //   for (it in iterate) {
+      //     console.log(it)
+      //   }
+      // }
+
 
       // create x, y scaling for placing data in svg pixels
-      var yScale = d3.scaleLinear()
-                     .domain([0, limit])
-                     .range([h - chartPad, chartPad]);
-      var xScale = d3.scaleLinear()
-                     .domain([0, limit])
-                     .range([chartPad, w - chartPad]);
+      var xScale = getXscale(data_limit, chartPad);
+
+      var yScale = getYscale(data_limit, chartPad);
 
 
-      drawScatter(full_dataset, xScale, yScale)
-
+      // call on drawScatter function
+      drawScatter(full_dataset[year], xScale, yScale);
 
 
 
   }).catch(function(e){
       throw(e);
+
   });
+
   console.log(" Yo");
 
+};
+
+
+function addViolent(full_dataset, vioArea) {
+  for (i in vioArea) {
+    for (j in vioArea[i]) {
+      // console.log(vioArea[i][j].Country)
+      let time = vioArea[i][j]["Time"];
+
+      if (time in full_dataset) {
+        // console.log(time);
+        full_dataset[time].push({
+          "Country": vioArea[i][j].Country,
+          "Vio": vioArea[i][j].Datapoint
+        });
+
+      };
+
+    };
+
+  };
+
+  return full_dataset;
+
+};
+
+
+function addPregnancy(full_dataset, teenPreg) {
+  for (k in teenPreg) {
+    // console.log(k)
+    for (l in teenPreg[k]) {
+      // console.log(teenPreg[k][l].Country)
+      let time = teenPreg[k][l]["Time"];
+
+      let country = teenPreg[k][l].Country;
+
+      // console.log(time);
+      // console.log(county);
+      if (time in full_dataset){
+        // console.log(time);
+        full_dataset[time].forEach(function(value) {
+          if (value.Country == country) {
+            value["Preg"] = teenPreg[k][l].Datapoint
+          };
+
+        });
+
+      };
+
+    };
+
+  };
+
+  return full_dataset;
+
+};
+
+
+function addGDP(full_dataset, gdp) {
+  for (m in gdp) {
+    // console.log(k)
+    for (n in gdp[m]) {
+      // console.log(teenPreg[k][l].Country)
+      let time = gdp[m][n]["Year"];
+
+      let country = gdp[m][n].Country;
+
+      // console.log(time);
+      // console.log(country);
+      if (time in full_dataset) {
+        // console.log(time);
+        full_dataset[time].forEach(function(kvt) {
+          if (kvt.Country == country) {
+            kvt["GDP"] = gdp[m][n].Datapoint
+          };
+
+        });
+
+      };
+
+    };
+
+  };
+
+  return full_dataset;
+
+};
+
+
+function getXscale(data_limit, chartPad) {
+  var xScale = d3.scaleLinear()
+                 .domain([0, data_limit])
+                 .range([chartPad.left, w - chartPad.right]);
+  return xScale;
+};
+
+
+function getYscale(data_limit, chartPad) {
+  var yScale = d3.scaleLinear()
+                 .domain([0, data_limit])
+                 .range([h - chartPad.bottom, chartPad.top]);
+  return yScale;
+};
+
+
+function drawScatter(data, xScale, yScale) {
+
+  // create the svg field
+  var svg = d3.select("body")
+              .append("svg")
+              .attr("width", w)
+              .attr("height", h);
+
+
+  // define x and y axis
+  var xAxis = d3.axisBottom(xScale);
+
+  var yAxis = d3.axisLeft(yScale);
+
+  // create x axis by calling on xAxis
+  svg.append("g")
+     .attr("class", "axis")
+     .attr("transform", "translate(0," + (h - chartPad.top) + ")")
+     .call(xAxis)
+
+  // create yAxis by calling on yAxis
+  svg.append("g")
+     .attr("class", "axis")
+     .attr("transform", "translate(" + chartPad.top + ",0)")
+     .call(yAxis)
+
+  // create color variable that changes with gdp
+  var gdp_color = d3.scaleThreshold()
+                    .domain([gdp_max * (1/4), gdp_max * (2/4), gdp_max * (3/4), gdp_max])
+                    .range(['#bd0026', '#fc4e2a', '#feb24c', '#ffeda0']);
+
+  // define interaction tooltip
+  var tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function(d) {
+                return d["Country"]
+                       + "<br>" + "GDP" + "<span style='color:lightgreen'>"
+                       + ": $" + d["GDP"] + "</span>" + "</br>"
+                       + "<br>Teens in violent areas: " + d["Vio"] + "%" + "</br>"
+                       + "<br>Teen Pregnancies: " + d["Preg"] + "%" + "</br>";
+
+              });
+
+  // make interactive animation work
+  svg.call(tip);
+
+  console.log(data)
+
+  // Create a dropdown
+  var drop_years = d3.select("#yearDropDown")
+                     .append("select")
+                   	 .selectAll("option")
+                     .data(data)
+                     .enter()
+                     .append("option")
+                     .attr("value", data.key)
+                     .text(data.key)
+
+
+  // draw the circles
+  svg.selectAll("circle")
+     .data(data)
+     .enter()
+     .append("circle")
+     .attr("class", "cir")
+     .attr("cx", function(d) {
+         return xScale(d["Vio"]);
+
+     })
+     .attr("cy", function(d) {
+         return yScale(d["Preg"]);
+
+     })
+     .attr("r", 5)
+     .attr("fill", function(d) {
+         return gdp_color(d["GDP"]);
+     })
+     .on('mouseover', tip.show) // for animation
+     .on('mouseout', tip.hide);
 };
