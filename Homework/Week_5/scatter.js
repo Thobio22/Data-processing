@@ -101,8 +101,30 @@ window.onload = function() {
       var yScale = getYscale(data_limit, chartPad);
 
 
-      // call on drawScatter function
+      // on window open, start on data 2012
       drawScatter(full_dataset[year], xScale, yScale);
+
+
+      // call on drawScatter function with selected year for data
+      document.getElementById("2012").onclick = function() {
+        d3.selectAll("svg").remove()
+        drawScatter(full_dataset["2012"], xScale, yScale);
+      };
+
+      document.getElementById("2013").onclick = function() {
+        d3.selectAll("svg").remove()
+        drawScatter(full_dataset["2013"], xScale, yScale);
+      };
+
+      document.getElementById("2014").onclick = function() {
+        d3.selectAll("svg").remove()
+        drawScatter(full_dataset["2014"], xScale, yScale);
+      };
+
+      document.getElementById("2015").onclick = function() {
+        d3.selectAll("svg").remove()
+        drawScatter(full_dataset["2015"], xScale, yScale);
+      };
 
 
 
