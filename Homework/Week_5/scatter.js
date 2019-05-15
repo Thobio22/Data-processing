@@ -30,12 +30,22 @@ var chartPad = {
   right: 700
 };
 
-// create color array for chart + legend
+// create color array for chart
 var colorArray = ['#bd0026', '#fc4e2a', '#feb24c', '#ffeda0'];
 
-// create value array of gdp portions for chart colors + legend
-var gdpPortions = [gdp_max * (1/4), gdp_max * (2/4), gdp_max * (3/4), gdp_max]
+// create value array of gdp portions for chart colors
+var gdpPortions = [gdp_max * (1/4), gdp_max * (2/4), gdp_max * (3/4), gdp_max];
 
+
+
+// create dictionary of color + gdp value for legend
+var legendValues = [];
+
+legendValues.push([gdpPortions[0], '#bd0026'],
+                  [gdpPortions[1], '#fc4e2a'],
+                  [gdpPortions[2], '#feb24c'],
+                  [gdpPortions[3], '#ffeda0']
+                );
 
 window.onload = function() {
 
@@ -353,7 +363,7 @@ function drawScatter(data, xScale, yScale) {
         .attr("x", 50)
         .attr("y", 50)
         .attr("font-size", "24px")
-        .text("Correlation between teen pregnancy and the % teens in violent areas");
+        .text("Correlation between teen pregnancy and the % of teens in violent areas");
 
      // create x-axis label
      svg.append("text")
@@ -384,28 +394,25 @@ function drawScatter(data, xScale, yScale) {
 
                       })
                       .append('rect')
-                      .attr("x", 0)
-                      .attr("y", 0)
+                      .attr("x", chartPad.right)
+                      .attr("y", chartPad.top)
                       .attr("width", 10)
                       .attr("height", 10)
                       .style("fill", function (d, i) {
-                          return colorArray[i];
+                          return d;
 
                       })
-                      .data(gdpPortions)
-                      .enter()
                       .append('text')
-                      .attr("x", 20)
-                      .attr("y", 10)
+                      .attr("x", chartPad.right + 20)
+                      .attr("y", chartPad.top + 10)
                       //.attr("dy", ".35em")
                       .text(function (d, i) {
-                          console.log(d)
-                          console.log(i)
-                          return d
+                          return gdpPortions[i];
+
                       })
                       .attr("class", "textselected")
                       .style("text-anchor", "start")
-                      .style("font-size", 15);
+                      .style("font-size", 30);
 
 
 
