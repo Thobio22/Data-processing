@@ -401,18 +401,26 @@ function drawScatter(data, xScale, yScale) {
                       .style("fill", function (d, i) {
                           return d;
 
-                      })
-                      .append('text')
-                      .attr("x", chartPad.right + 20)
-                      .attr("y", chartPad.top + 10)
-                      //.attr("dy", ".35em")
-                      .text(function (d, i) {
-                          return gdpPortions[i];
+                      });
 
-                      })
-                      .attr("class", "textselected")
-                      .style("text-anchor", "start")
-                      .style("font-size", 30);
+     // create text for legend
+     var yLegend = chartPad.top;
+
+     for (i = 0; i < 4; i++) {
+
+       svg.append('text')
+          .attr("x", chartPad.right + 20)
+          .attr("y", yLegend + 9)
+          .text("GDP under " + gdpPortions[i])
+          .attr("class", "textselected")
+          .style("text-anchor", "start")
+          .style("font-size", 30);
+
+
+       yLegend = yLegend + 20;
+
+     };
+
 
 
 
