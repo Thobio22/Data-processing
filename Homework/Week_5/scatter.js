@@ -158,11 +158,9 @@ function addText() {
 function addViolent(full_dataset, vioArea) {
   for (i in vioArea) {
     for (j in vioArea[i]) {
-      // console.log(vioArea[i][j].Country)
       let time = vioArea[i][j]["Time"];
 
       if (time in full_dataset) {
-        // console.log(time);
         full_dataset[time].push({
           "Country": vioArea[i][j].Country,
           "Vio": vioArea[i][j].Datapoint
@@ -181,17 +179,12 @@ function addViolent(full_dataset, vioArea) {
 
 function addPregnancy(full_dataset, teenPreg) {
   for (k in teenPreg) {
-    // console.log(k)
     for (l in teenPreg[k]) {
-      // console.log(teenPreg[k][l].Country)
       let time = teenPreg[k][l]["Time"];
 
       let country = teenPreg[k][l].Country;
 
-      // console.log(time);
-      // console.log(county);
       if (time in full_dataset){
-        // console.log(time);
         full_dataset[time].forEach(function(value) {
           if (value.Country == country) {
             value["Preg"] = teenPreg[k][l].Datapoint
@@ -212,17 +205,12 @@ function addPregnancy(full_dataset, teenPreg) {
 
 function addGDP(full_dataset, gdp) {
   for (m in gdp) {
-    // console.log(k)
     for (n in gdp[m]) {
-      // console.log(teenPreg[k][l].Country)
       let time = gdp[m][n]["Year"];
 
       let country = gdp[m][n].Country;
 
-      // console.log(time);
-      // console.log(country);
       if (time in full_dataset) {
-        // console.log(time);
         full_dataset[time].forEach(function(kvt) {
           if (kvt.Country == country) {
             kvt["GDP"] = gdp[m][n].Datapoint
