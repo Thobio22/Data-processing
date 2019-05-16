@@ -153,7 +153,7 @@ function addText() {
     .append("p")
     .text("This scatterplot made with D3 shows the percentage of teens in violent areas \
     against the precentage of teen pregnancies in that country. The color is an \
-    indicator for the GDP of that country.");
+    indicator for the GDP of that country. Source: " + "stats.oecd.org, CWB table");
 };
 
 
