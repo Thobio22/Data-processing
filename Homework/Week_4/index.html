@@ -184,13 +184,15 @@
         svg.append("g")
            .attr("class", "axis")
            .attr("transform", "translate(0," + (h - chartPad) + ")")
-           .call(xAxis)
+           .call(xAxis);
+
 
         // create yAxis by calling on yAxis
         svg.append("g")
            .attr("class", "axis")
            .attr("transform", "translate(" + chartPad + ",0)")
-           .call(yAxis)
+           .call(yAxis);
+
 
         // create chart Title
         svg.append("text")
@@ -200,6 +202,7 @@
            .attr("font-size", "24px")
            .text("Marvel movies ranking based on gross income");
 
+
         // create x-axis label
         svg.append("text")
            .attr("class", "x label")
@@ -208,6 +211,7 @@
            .attr("y", h - 50)
            .text("Marvel movies ranking");
 
+
         // create y-axis label
         svg.append("text")
            .attr("class", "y label")
@@ -215,7 +219,7 @@
            .attr("y", 5)
            .attr("dy", "1em")
            .attr("transform", "rotate(-90)")
-           .text("Gross income (in American dollars)")
+           .text("Gross income (in American dollars)");
 
       });
 

@@ -33,6 +33,7 @@ var chartPad = {
 // create color array for chart
 var colorArray = ['#bd0026', '#fc4e2a', '#feb24c', '#ffeda0'];
 
+
 // create value array of gdp portions for chart colors
 var gdpPortions = [gdp_max * (1/4), gdp_max * (2/4), gdp_max * (3/4), gdp_max];
 
@@ -55,6 +56,7 @@ window.onload = function() {
 
   var requests = [d3.json(teensInViolentArea), d3.json(teenPregnancies), d3.json(GDP)];
 
+
   // add title, name, studentID and short description
   addText();
 
@@ -67,26 +69,12 @@ window.onload = function() {
 
       var gdp = transformResponseGDP(response[2]);
 
-      // console.log(vioArea);
-      // console.log(teenPreg);
-      // console.log(gdp);
-      // console.log(Object.keys().length);
       var full_dataset = {
             '2012': [],
             '2013': [],
             '2014': [],
             '2015': []
       };
-
-      var vioCountry = Object.keys(vioArea);
-
-      var pregCountry = Object.keys(teenPreg);
-
-      var gdpCountry = Object.keys(gdp);
-
-      // console.log(vioCountry);
-      // console.log(pregCountry);
-      // console.log(gdpCountry);
 
 
       // add data from all datasets to full_dataset
@@ -101,16 +89,6 @@ window.onload = function() {
       for (oecd in full_dataset) {
         full_dataset[oecd].pop();
       };
-
-      // console.log(full_dataset)
-      // console.log(full_dataset[year]);
-
-      // for (iterate in full_dataset[year]) {
-      //   console.log(iterate);
-      //   for (it in iterate) {
-      //     console.log(it)
-      //   }
-      // }
 
 
       // create x, y scaling for placing data in svg pixels
@@ -177,6 +155,7 @@ function addText() {
     against the precentage of teen pregnancies in that country. The color is an \
     indicator for the GDP of that country.");
 };
+
 
 function addViolent(full_dataset, vioArea) {
   for (i in vioArea) {
@@ -298,25 +277,26 @@ function drawScatter(data, xScale, yScale) {
 
   var yAxis = d3.axisLeft(yScale);
 
+
   // create x axis by calling on xAxis
   svg.append("g")
      .attr("class", "axis")
      .attr("transform", "translate(0," + (h - chartPad.top) + ")")
-     .call(xAxis)
+     .call(xAxis);
+
 
   // create yAxis by calling on yAxis
   svg.append("g")
      .attr("class", "axis")
      .attr("transform", "translate(" + chartPad.top + ",0)")
-     .call(yAxis)
-
-
+     .call(yAxis);
 
 
   // create color variable that changes with gdp
   var gdp_color = d3.scaleThreshold()
                     .domain(gdpPortions)
                     .range(colorArray);
+
 
   // define interaction tooltip
   var tip = d3.tip()
@@ -331,6 +311,7 @@ function drawScatter(data, xScale, yScale) {
 
               })
               .attr("stroke", "black");
+
 
   // make interactive animation work
   svg.call(tip);
@@ -357,6 +338,7 @@ function drawScatter(data, xScale, yScale) {
      .on('mouseover', tip.show) // for animation
      .on('mouseout', tip.hide);
 
+
      // create chart Title
      svg.append("text")
         .attr("transform", "translate(100,0)")
@@ -365,6 +347,7 @@ function drawScatter(data, xScale, yScale) {
         .attr("font-size", "24px")
         .text("Correlation between teen pregnancy and the % of teens in violent areas");
 
+
      // create x-axis label
      svg.append("text")
         .attr("class", "x label")
@@ -372,6 +355,7 @@ function drawScatter(data, xScale, yScale) {
         .attr("x", w - chartPad.right)
         .attr("y", h - 50)
         .text("% Teens in violent areas");
+
 
      // create y-axis label
      svg.append("text")
@@ -382,6 +366,7 @@ function drawScatter(data, xScale, yScale) {
         .attr("dy", "1em")
         .attr("transform", "rotate(-90)")
         .text("Teen pregnancy (%)");
+
 
      // create legend
      var legend3 = svg.selectAll('.legend3')
@@ -402,6 +387,7 @@ function drawScatter(data, xScale, yScale) {
                           return d;
 
                       });
+
 
      // create text for legend
      var yLegend = chartPad.top;
