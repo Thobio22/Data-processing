@@ -135,20 +135,20 @@ window.onload = function() {
 function addText() {
   // add title, name, studentID and short description
   d3.select("body")
-    .append("h1")
+  .append("h1")
     .text("The correlation between percentage teen pregnancy and the percentage of teens in violent areas")
     .style("font-weight", "bold");
 
   d3.select("body")
-    .append("h3")
+  .append("h3")
     .text("Thomas Verouden");
 
   d3.select("body")
-    .append("h3")
+  .append("h3")
     .text("StudentID: 10779272");
 
   d3.select("body")
-    .append("p")
+  .append("p")
     .text("This scatterplot made with D3 shows the percentage of teens in violent areas \
     against the precentage of teen pregnancies in that country. The color is an \
     indicator for the GDP of that country. Source: " + "stats.oecd.org, CWB table");
@@ -253,7 +253,7 @@ function drawScatter(data, xScale, yScale) {
 
   // create the svg field
   var svg = d3.select("body")
-              .append("svg")
+            .append("svg")
               .attr("width", w)
               .attr("height", h);
 
@@ -307,7 +307,7 @@ function drawScatter(data, xScale, yScale) {
   svg.selectAll("circle")
      .data(data)
      .enter()
-     .append("circle")
+   .append("circle")
      .attr("class", "cir")
      .attr("cx", function(d) {
          return xScale(d["Vio"]);
@@ -358,13 +358,13 @@ function drawScatter(data, xScale, yScale) {
      var legend3 = svg.selectAll('.legend3')
                       .data(colorArray)
                       .enter()
-                      .append('g')
+                    .append('g')
                       .attr("class", "legends3")
                       .attr("transform", function (d, i) {
                           return "translate(0," + i * 20 + ")";
 
                       })
-                      .append('rect')
+                    .append('rect')
                       .attr("x", chartPad.right)
                       .attr("y", chartPad.top)
                       .attr("width", 10)

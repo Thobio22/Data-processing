@@ -20,11 +20,13 @@
 
     .cir:hover {
       fill: black,
-
+      # kan beter in .on(mousehover doen, dit wordt overschreven
     }
 
     .cir {
       border-color: black;
+      border-radius: 5px
+      # kan misschien ook beter in de geappende attribuut staan
     }
 
     .x.axis path {
