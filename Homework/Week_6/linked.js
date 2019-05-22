@@ -42,7 +42,7 @@ window.onload = function() {
 
 
 
-  };
+  })
 
 
 
@@ -51,7 +51,7 @@ window.onload = function() {
 
 
 
-});
+};
 
 function drawScatter(data, chartPad){
 
