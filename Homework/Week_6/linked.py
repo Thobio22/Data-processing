@@ -2,12 +2,11 @@
 #      Name: Thomas Verouden
 #      Student number: 10779272
 #
-#      This file visualises the amount of teens in violent areas against the
-#      amount of teen pregnancies in a d3 scatterplot, with the Country GDP indicated by color.
+#      This file visualises the HPI
 #
 #      source: http://happyplanetindex.org/resources ==> data
 #      python -m http.server 8888 &
-#      http://localhost:8888/scatter.html
+#      http://localhost:8888/linked.html
 
 import pandas as pd
 import numpy as np
@@ -23,35 +22,17 @@ def clean(data):
     # replace "unknown" in Pop. density with np.nan
     data = data.replace("unknown", np.nan)
 
-    # remove dollar symbol
-    data[["Average Life Expectancy",\
-          "Footprint (gha/capita)",\
-          "Inequality of Outcomes",\
-          "Inequality of Outcomes",\
-          "Inequality-adjusted Life Expectancy",\
-          "Population"]]\
-          = data[["Average Life Expectancy",\
-                  "Footprint (gha/capita)",\
-                  "Inequality of Outcomes",\
-                  "Inequality of Outcomes",\
-                  "Inequality-adjusted Life Expectancy",\
-                  "Population"]].str.replace(",", ".")
+    # replace , with .
+    data["Average Life Expectancy"] = data["Average Life Expectancy"].str.replace(",", ".")
+    data["Footprint (gha/capita)"] = data["Footprint (gha/capita)"].str.replace(",", ".")
+    data["Inequality of Outcomes"] = data["Inequality of Outcomes"].str.replace(",", ".")
+    data["Inequality-adjusted Life Expectancy"] = data["Inequality-adjusted Life Expectancy"].str.replace(",", ".")
 
-    # set adjusted gross to integer
-    data["HPI Rank"]\
-        ["Average Life Expectancy"]\
-        ["Footprint (gha/capita)"]\
-        ["Inequality of Outcomes"]\
-        ["Inequality of Outcomes"]\
-        ["Inequality-adjusted Life Expectancy"]\
-        ["Population"] \
-        = pd.to_numeric(data["HPI Rank"]\
-        ["Average Life Expectancy"]\
-        ["Footprint (gha/capita)"]\
-        ["Inequality of Outcomes"]\
-        ["Inequality of Outcomes"]\
-        ["Inequality-adjusted Life Expectancy"]\
-        ["Population"])
+    data["Average Life Expectancy"] = pd.to_numeric(data["Average Life Expectancy"])
+    data["Footprint (gha/capita)"] = pd.to_numeric(data["Footprint (gha/capita)"])
+    data["Inequality of Outcomes"] = pd.to_numeric(data["Inequality of Outcomes"])
+    data["Inequality-adjusted Life Expectancy"] = pd.to_numeric(data["Inequality-adjusted Life Expectancy"])
+    data["Population"] = pd.to_numeric(data["Population"])
 
     return data
 
