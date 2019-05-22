@@ -15,15 +15,11 @@
 
 window.onload = function() {
 
-  var h = 600;
-
-  var w = 1200;
-
   // var barPad = 5;
 
-  var year = "2012";
-
   var chartPad = {
+    h: 600,
+    w: 1200,
     top: 100,
     bottom: 100,
     left: 100,
@@ -36,6 +32,7 @@ window.onload = function() {
     // drawMap(dataset, chartPad);
 
     // clicked_dataset will be what country will be selected. > linked view
+    var clicked_dataset = dataset;
 
     drawBar(clicked_dataset, chartPad);
 
@@ -53,19 +50,25 @@ window.onload = function() {
 
 };
 
-function drawScatter(data, chartPad){
+function drawBar(data, chartPad){
 
   // create the svg field
   var svg = d3.select("body")
             .append("svg")
-              .attr("width", w)
-              .attr("height", h);
+              .attr("width", chartPad.w)
+              .attr("height", chartPad.h);
+
+
+  // data limit == last/highest data point
+  var dataLimitX = 200;
+
+  var dataLimitY =
 
 
   // create x, y scaling for placing data in svg pixels
-  var xScale = getXscale(data_limit, chartPad);
+  var xScale = getXscale(dataLimitX, chartPad);
 
-  var yScale = getYscale(data_limit, chartPad);
+  var yScale = getYscale(dataLimitY, chartPad);
 
 
   // define x and y axis
@@ -87,25 +90,29 @@ function drawScatter(data, chartPad){
   svg.call(tip);
 
   // draw the circles
-  svg.selectAll("circle")
-     .data(dataset)
-     .enter()
-   .append("circle")
-     .attr("class", "cir")
-     .attr("cx", function(d) {
-         return xScale(d["Inequality-adjusted Life Expectancy"]);
+  var rect = svg.selectAll("rect")
+                .data(dataset)
+                .enter()
+              .append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d) {
+                   return xScale(d["HPI Rank"]);
 
-     })
-     .attr("cy", function(d) {
-         return yScale(d["HPI Rank"]);
+                })
+                .attr("y", function(d) {
+                   return yScale(d["Inequality-adjusted Life Expectancy"]);
 
-     })
-     // .attr("r", 5)
-     // .attr("fill", function(d) {
-     //     return color(d["Inequality of Outcomes"]);
-     // })
-     .on('mouseover', tip.show) // for animation
-     .on('mouseout', tip.hide);
+                })
+                .attr("width", chartPad.w / dataset.length - 5)
+                .attr("height", function(d) {
+                   return  (chartPad.h - yScale(+d["Inequality-adjusted Life Expectancy"]) - chartPad.top);
+                 })
+                // .attr("r", 5)
+                // .attr("fill", function(d) {
+                //     return color(d["Inequality of Outcomes"]);
+                // })
+               .on('mouseover', tip.show) // for animation
+               .on('mouseout', tip.hide);
 
 
 }
