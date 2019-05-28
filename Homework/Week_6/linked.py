@@ -10,8 +10,6 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from numpy import percentile
 
 
 def clean(data):
@@ -33,6 +31,8 @@ def clean(data):
     data["Inequality of Outcomes"] = pd.to_numeric(data["Inequality of Outcomes"])
     data["Inequality-adjusted Life Expectancy"] = pd.to_numeric(data["Inequality-adjusted Life Expectancy"])
     data["Population"] = pd.to_numeric(data["Population"])
+
+    data.columns = data.columns.str.replace(" ", "_")
 
     return data
 
