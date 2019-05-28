@@ -1,3 +1,6 @@
+
+
+
 <!--!/usr/bin/env python
     Name: Thomas Verouden
     Student number: 10779272
@@ -16,24 +19,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <!-- Import D3 V5 -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script>
-      d3v5 = d3;
-      window.d3 = null;
-    </script>
-
-    <!-- Import D3 V3 and TopoJSON for datamaps -->
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    <script src="datamaps.world.min.js"></script>
-    <script>
-      d3v3 = d3;
-      window.d3 = null;
-    </script>
-    <script src="linked.js"></script>
-    <script src="d3-tip.js"></script>
-
+    <script src="/datamaps.world.min.js"></script>
     <link rel="stylesheet" type="text/css" href="linked.css">
     <title>HPI</title>
   </head>
@@ -41,9 +29,11 @@
     <h1>Happy Planet Index</h1>
     <h3>Thomas Verouden</h3>
     <h3>StudentID: 10779272</h3>
-    <p>These plots are made with d3 (v3 and v5) and datamaps.</p>
+    <p>These plots are made with d3 and datamaps.</p>
     <p>source: http://happyplanetindex.org/resources</p>
     <div id="container" style="position: relative; width: 500px; height: 300px;"></div>
-
+    <script>
+        var map = new Datamap({element: document.getElementById('container')});
+    </script>
   </body>
 </html>

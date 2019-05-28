@@ -41,7 +41,8 @@ def convert_to_json(cleansed):
     """
     This converts the input data to json format
     """
-    cleansed = cleansed.to_json("cleansed_happiness.json", orient="records")
+    clean = cleansed.to_json("happiness.json", orient="records")
+    byCountry = cleansed.set_index("Country").to_json("happiness_country.json", orient="index")
 
 
 if __name__ == "__main__":

@@ -17,24 +17,50 @@ window.onload = function() {
 
   // var barPad = 5;
 
-  var chartPad = {
-    h: 600,
-    w: 1200,
-    top: 100,
-    bottom: 100,
-    left: 100,
-    right: 700
-  };
-
   // call on data, in which to plot the barchart itself
-  d3.json("cleansed_happiness.json").then(function(dataset){
+  d3v5.json("happiness.json").then(function(dataset){
 
-    // drawMap(dataset, chartPad);
+    var chartPad = {
+      h: 2000,
+      w: 1200,
+      top: 100,
+      bottom: 100,
+      left: 100,
+      right: 700
+    };
+
+
+    var limit = {
+      xFoot:4,
+      yFoot:4,
+    };
+
+
+    // draw map
+    var linkedMap = new Datamap({element: document.getElementById('container')});
+
+
+    // scatter dataset
+    var regionData = {
+      "Americas": [],
+      "Asia Pacific": [],
+      "Europe": [],
+      "Middle East and North Africa": [],
+      "Post-communist": [],
+      "Sub Saharan Africa": []
+    };
+
+    // // add region data to regionData
+    // regionData = addData(regionData, dataset)
+
+
 
     // clicked_dataset will be what country will be selected. > linked view
-    var clicked_dataset = dataset;
+    var clickedDataset = dataset;
 
-    drawBar(clicked_dataset, chartPad);
+
+
+    drawBar(clickedDataset, chartPad);
 
 
 
@@ -50,35 +76,53 @@ window.onload = function() {
 
 };
 
-function drawBar(data, chartPad){
+
+// function addData(regionData, dataset) {
+//   for (i in dataset) {
+//     for (j in dataset[i]) {
+//       let region = dataset[i][j]["Region"];
+//
+//       if (region in dataset) {
+//         dataset[region].push({
+//           "Country": dataset[i][j].Country,
+//           "Region": dataset[i][j].Region,
+//           "HPI Rank": dataset[i][j].HPI Rank,
+//           "Average Life Expectancy": dataset[i][j].,
+//           "Footprint (gha\/capita)": dataset[i][j].,
+//           "Inequality of Outcomes": dataset[i][j].,
+//           "Inequality-adjusted Life Expectancy": dataset[i][j].,
+//           "Population": HPI Rank
+//         })
+//       };
+//     };
+//   };
+// };
+
+
+
+function drawBar(data, chartPad, limit){
 
   // create the svg field
-  var svg = d3.select("body")
+  var svg = d3v5.select("body")
             .append("svg")
               .attr("width", chartPad.w)
-              .attr("height", chartPad.h);
-
-
-  // data limit == last/highest data point
-  var dataLimitX = 200;
-
-  var dataLimitY =
+              .attr("height", chartPad.h / 2);
 
 
   // create x, y scaling for placing data in svg pixels
-  var xScale = getXscale(dataLimitX, chartPad);
+  var xScale = getXscale(limit.x, chartPad);
 
-  var yScale = getYscale(dataLimitY, chartPad);
+  var yScale = getYscale(limit.y, chartPad);
 
 
   // define x and y axis
-  var xAxis = d3.axisBottom(xScale);
+  var xAxis = d3v5.axisBottom(xScale);
 
-  var yAxis = d3.axisLeft(yScale);
+  var yAxis = d3v5.axisLeft(yScale);
 
 
   // define interaction tooltip
-  var tip = d3.tip()
+  var tip = d3v5.tip()
               .attr('class', 'd3-tip')
               .offset([-10, 0])
               .html(function(d) {
@@ -115,12 +159,12 @@ function drawBar(data, chartPad){
                .on('mouseout', tip.hide);
 
 
-}
+};
 
 
-function getXscale(data_limit, chartPad) {
-  var xScale = d3.scaleLinear()
-                 .domain([0, data_limit])
+function getXscale(limit, chartPad) {
+  var xScale = d3v5.scaleLinear()
+                 .domain([0, limit])
                  .range([chartPad.left, w - chartPad.right]);
 
   return xScale;
@@ -128,9 +172,9 @@ function getXscale(data_limit, chartPad) {
 };
 
 
-function getYscale(data_limit, chartPad) {
-  var yScale = d3.scaleLinear()
-                 .domain([0, data_limit])
+function getYscale(limit, chartPad) {
+  var yScale = d3v5.scaleLinear()
+                 .domain([0, limit])
                  .range([h - chartPad.bottom, chartPad.top]);
 
   return yScale;
