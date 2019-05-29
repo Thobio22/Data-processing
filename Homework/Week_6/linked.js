@@ -110,63 +110,12 @@ function getMapDataset(dataset) {
              "HTI", "HND", "HKG", "HUN", "ISL", "IND", "IDN", "IRN", "IRQ", "IRL",
              "ISR", "ITA", "JAM", "JPN", "KAZ", "KEN", "KGZ", "LVA", "LBN", "LSO",
              "LBR", "LTU", "LUX", "MKD", "MWI", "MYS", "MLT", "MRT", "MUS", "MEX",
-             "MNG", "MNE", "MAR", "MOZ",
-MMR
-NAM
-NPL
-NLD
-NZL
-NIC
-NER
-NGA
-NOR
-OMN
-PAK
-PSE
-PAN
-PRY
-PER
-PHL
-POL
-PRT
-COD
-ROU
-RUS
-RWA
-SEN
-SRB
-SLE
-SVK
-SVN
-ZAF
-KOR
-ESP
-LKA
-SUR
-SWZ
-SWE
-CHE
-SYR
-TJK
-TZA
-THA
-TGO
-TTO
-TUN
-TUR
-TKM
-UGA
-UKR
-GBR
-USA
-URY
-UZB
-VUT
-VEN
-VNM
-YEM
-RNR
-ZWE]
+             "MNG", "MNE", "MAR", "MOZ", "MMR", "NAM", "NPL", "NLD", "NZL", "NIC",
+             "NER", "NGA", "NOR", "OMN", "PAK", "PSE", "PAN", "PRY", "PER", "PHL",
+             "POL", "PRT", "COD", "ROU", "RUS", "RWA", "SEN", "SRB", "SLE", "SVK",
+             "SVN", "ZAF", "KOR", "ESP", "LKA", "SUR", "SWZ", "SWE", "CHE", "SYR",
+             "TJK", "TZA", "THA", "TGO", "TTO", "TUN", "TUR", "TKM", "UGA", "UKR",
+             "GBR", "USA", "URY", "UZB", "VUT", "VEN", "VNM", "YEM", "RNR", "ZWE"]
 
 }
 
