@@ -35,21 +35,13 @@ window.onload = function() {
 
 
     // clicked_dataset will be what country will be selected. > linked view
-    var clickedDataset = [dataset[0]];
-
-    // draw map
-    var linkedMap = new Datamap({
-                  element: document.getElementById('map_place'),
-                    fills: {
-                      defaultFill: 'grey'
-                    },
-                    data: 
+    var mapDataset = getMapDataset(dataset);
 
 
-                  });
 
 
-    var clickedDataset = [dataset[0]];
+
+    drawMap(mapDataset, dataset)
     // // scatter dataset
     // var regionData = {
     //   "Americas": [],
@@ -107,6 +99,98 @@ window.onload = function() {
 //   };
 // };
 
+function getMapDataset(dataset) {
+
+  // seperate usefull data + map relevant data from dataset
+  mapData = ["AFG", "ALB", "DZA", "ARG", "ARM", "AUS", "AUT", "BGD", "BLR", "BEL",
+             "BLZ", "BEN", "BTN", "BOL", "BIH", "BWA", "BRA", "BGR", "BFA", "BDI",
+             "KHM", "CMR", "CAN", "TCD", "CHL", "CHN", "COL", "COM", "CRI", "CIV",
+             "HRV", "CYP", "CZE", "DNK", "DJI", "DOM", "ECU", "EGY", "SLV", "EST",
+             "ETH", "FIN", "FRA", "GAB", "GEO", "DEU", "GHA", "GRC", "GTM", "GIN",
+             "HTI", "HND", "HKG", "HUN", "ISL", "IND", "IDN", "IRN", "IRQ", "IRL",
+             "ISR", "ITA", "JAM", "JPN", "KAZ", "KEN", "KGZ", "LVA", "LBN", "LSO",
+             "LBR", "LTU", "LUX", "MKD", "MWI", "MYS", "MLT", "MRT", "MUS", "MEX",
+             "MNG", "MNE", "MAR", "MOZ",
+MMR
+NAM
+NPL
+NLD
+NZL
+NIC
+NER
+NGA
+NOR
+OMN
+PAK
+PSE
+PAN
+PRY
+PER
+PHL
+POL
+PRT
+COD
+ROU
+RUS
+RWA
+SEN
+SRB
+SLE
+SVK
+SVN
+ZAF
+KOR
+ESP
+LKA
+SUR
+SWZ
+SWE
+CHE
+SYR
+TJK
+TZA
+THA
+TGO
+TTO
+TUN
+TUR
+TKM
+UGA
+UKR
+GBR
+USA
+URY
+UZB
+VUT
+VEN
+VNM
+YEM
+RNR
+ZWE]
+
+}
+
+
+
+function drawMap(dataset) {
+  // draw map
+  var linkedMap = new Datamap({
+                element: document.getElementById('map_place'),
+                  fills: {
+                    HIGH: '#afafaf',
+                    LOW: '#123456',
+                    MEDIUM: 'blue',
+                    UNKNOWN: 'rgb(0,0,0)',
+                    defaultFill: 'grey'
+                  },
+                  data: dataset
+
+
+                });
+
+};
+
+
 
 
 function drawBar(dataset, chartPad, limit) {
@@ -135,26 +219,7 @@ function drawBar(dataset, chartPad, limit) {
   var yAxis = d3v5.axisLeft(yScale);
 
 
-  // // define interaction tooltip
-  // var avBarTip = d3v5.tip()
-  //                    .attr('class', 'd3-tip')
-  //                    .offset([-10, 0])
-  //                    .html(function(d) {
-  //                      return d["Country"] + " HPI Rank: " + d["HPI Rank"] + "<br>"
-  //                             + "Average Life Expectancy: " + d["Average_Life_Expectancy"];
-  //
-  //                    });
-  //
-  //
-  // var adjBarTip = d3v5.tip()
-  //                     .attr('class', 'd3-tip')
-  //                     .offset([-10, 0])
-  //                     .html(function(d) {
-  //                       return d["Country"] + " HPI Rank: " + d["HPI Rank"] + "<br>"
-  //
-  //
-  //                     });
-
+  // define interaction tooltip
   var tip = d3v5.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
@@ -167,11 +232,7 @@ function drawBar(dataset, chartPad, limit) {
                 .attr("stroke", "black");;
 
 
-  // // make interactive animation work
-  // svg.call(avBarTip);
-  //
-  // svg.call(adjBarTip);
-
+  // call on tooltip for it to work
   svg.call(tip);
 
 
@@ -261,89 +322,6 @@ function drawBar(dataset, chartPad, limit) {
      .attr("dy", "1em")
      .attr("transform", "rotate(-90)")
      .text("Age (in years)");
-
-
-
-
-
-
-
-
-
-  //
-  // // draw the grouped bars
-  // var groupBar = svg.selectAll("groupBar")
-  //                     .data(dataset)
-  //                     .enter()
-  //                   .append("groupBar")
-  //                     .attr("class", "chart")
-  //                     .attr("transform", function(d) {
-  //                       return 'translate(${xScale(d.Country)}, 0)'
-  //                     });
-  //
-  //
-  // // add bars to groupchart
-  // groupBar.selectAll("avLifeExp")
-  //         .data(function(d) {
-  //           return d;
-  //         })
-  //         .enter()
-  //       .append("avLifeExp")
-  //         .attr("class", "avLifeExp")
-  //         .style("fill", "#f9eb25")
-  //         .attr("x", function(d) {
-  //           return "Average_Life_Expectancy"
-  //         })
-  //         .attr("y", function(d) {
-  //           return yScale(d["Average_Life_Expectancy"])
-  //         })
-  //         .attr("width", xScale2.bandwidth())
-  //         .attr("height", function(d) {
-  //           return (chartPad.h - yScale(+d["Average_Life_Expectancy"]) - chartPad.top)
-  //         })
-  //         .on('mouseover', avBarTip.show) // for animation
-  //         .on('mouseout', avBarTip.hide);
-  //
-  //
-  //
-  // groupbar.selectAll("adjLifeExp")
-  //         .data(function(d) {
-  //           console.log(d)
-  //           return [d];
-  //         })
-  //         .enter()
-  //       .append("adjLifeExp")
-  //         .attr("class", "adjLifeExp")
-  //         .style("fill", "#f91109")
-  //         .attr("x", function(d) {
-  //           return "Inequality-adjusted_Life_Expectancy"
-  //         })
-  //         .attr("y", function(d) {
-  //           return yScale(d["Inequality-adjusted_Life_Expectancy"])
-  //         })
-  //         .attr("width", xScale2.bandwidth())
-  //         .attr("height", function(d) {
-  //           return (chartPad.h - yScale(+d["Inequality-adjusted_Life_Expectancy"]) - chartPad.top)
-  //         })
-  //         .on('mouseover', adjBarTip.show) // for animation
-  //         .on('mouseout', adjBarTip.hide);
-  //
-  //               // .attr("x", function(d) {
-                //    return xScale(d["HPI Rank"]);
-                //
-                // })
-                // .attr("y", function(d) {
-                //    return yScale(d["Inequality-adjusted_Life_Expectancy"]);
-                //
-                // })
-                // .attr("width", chartPad.w / dataset.length - 5)
-                // .attr("height", function(d) {
-                //    return  (chartPad.h - yScale(+d["Inequality-adjusted_Life_Expectancy"]) - chartPad.top);
-                //  })
-                // // .attr("r", 5)
-                // // .attr("fill", function(d) {
-                // //     return color(d["Inequality of Outcomes"]);
-                // // })
 
 
 
