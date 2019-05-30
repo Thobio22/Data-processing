@@ -5,9 +5,11 @@
 // This file visualises the HPI
 //
 // source: source: http://happyplanetindex.org/resources ==> data
+// datamap structure: https://github.com/markmarkoh/datamaps/blob/master/README.md#getting-started
 // grouped barchart instructions: https://medium.com/@vaibhavkumar_19430/how-to-create-a-grouped-bar-chart-in-d3-js-232c54f85894
 // python -m http.server 8888 &
 // http://localhost:8888/linked.html
+
 
 
 
@@ -28,7 +30,9 @@ window.onload = function() {
       bottom: 100,
       left: 100,
       right: 700,
-      betweenBar: 10
+      betweenBar: 10,
+      xScaleRangeL: 100,
+      xScaleRangeR: 400
     };
 
 
@@ -37,31 +41,10 @@ window.onload = function() {
     // clicked_dataset will be what country will be selected. > linked view
     var mapDataset = getMapDataset(dataset);
 
-
-
-
-
-    drawMap(mapDataset, dataset)
-    // // scatter dataset
-    // var regionData = {
-    //   "Americas": [],
-    //   "Asia Pacific": [],
-    //   "Europe": [],
-    //   "Middle East and North Africa": [],
-    //   "Post-communist": [],
-    //   "Sub Saharan Africa": []
-    // };
-    //
-    // // // add region data to regionData
-    // // regionData = addData(regionData, dataset)
-
-
-
-
-
+    drawMap(mapDataset, dataset, chartPad)
 
     // draw grouped barchart based on given dataset
-    drawBar(clickedDataset, chartPad);
+    drawBar(dataset, chartPad);
 
 
 
@@ -101,8 +84,8 @@ window.onload = function() {
 
 function getMapDataset(dataset) {
 
-  // seperate usefull data + map relevant data from dataset
-  mapData = ["AFG", "ALB", "DZA", "ARG", "ARM", "AUS", "AUT", "BGD", "BLR", "BEL",
+  // list of all ISO of the used countries
+  mapISO = ["AFG", "ALB", "DZA", "ARG", "ARM", "AUS", "AUT", "BGD", "BLR", "BEL",
              "BLZ", "BEN", "BTN", "BOL", "BIH", "BWA", "BRA", "BGR", "BFA", "BDI",
              "KHM", "CMR", "CAN", "TCD", "CHL", "CHN", "COL", "COM", "CRI", "CIV",
              "HRV", "CYP", "CZE", "DNK", "DJI", "DOM", "ECU", "EGY", "SLV", "EST",
@@ -115,34 +98,93 @@ function getMapDataset(dataset) {
              "POL", "PRT", "COD", "ROU", "RUS", "RWA", "SEN", "SRB", "SLE", "SVK",
              "SVN", "ZAF", "KOR", "ESP", "LKA", "SUR", "SWZ", "SWE", "CHE", "SYR",
              "TJK", "TZA", "THA", "TGO", "TTO", "TUN", "TUR", "TKM", "UGA", "UKR",
-             "GBR", "USA", "URY", "UZB", "VUT", "VEN", "VNM", "YEM", "RNR", "ZWE"]
+             "GBR", "USA", "URY", "UZB", "VUT", "VEN", "VNM", "YEM", "RNR", "ZWE"];
 
-}
+  // create list with all relevant country data
+  var countryData = {};
+
+  mapISO.forEach(function(d, i) {
+      countryData[d] = {
+        "Country": dataset[i]["Country"],
+        "HPI": dataset[i]["HPI_Rank"],
+        "Footprint": dataset[i]["Footprint_(gha\/capita)"],
+        "AvLifeExp": dataset[i]["Average_Life_Expectancy"],
+        "AdjLifeExp": dataset[i]["Inequality-adjusted_Life_Expectancy"]
+      }
+    });
+
+  // create fillcolor for map based on footprint
+  var colorScale = function(footprint) {
+     if (0 < footprint && footprint < 1) {
+       return "#ffffcc";
+     }
+     else if (1 < footprint && footprint < 3) {
+       return "#ffeda0"
+     }
+     else if (3 < footprint && footprint < 5) {
+       return "#feb24c"
+     }
+     else if (5 < footprint && footprint < 7) {
+       return "#fd8d3c"
+     }
+     else if (7 < footprint && footprint < 9) {
+       return "#fc4e2a"
+     }
+     else if (9 < footprint && footprint < 11) {
+       return "#e31a1c"
+     }
+     else {
+       return "#800026"
+     }
+  };
+
+  // add relevant fillcolor to countryData based on present footprint
+  Object.keys(countryData).forEach(function (d) {
+        countryData[d]["fillcolor"] = colorScale(countryData[d].Footprint)
+  });
 
 
+};
 
-function drawMap(dataset) {
+
+function drawMap(mapDataset, barDataset, chartPad) {
   // draw map
   var linkedMap = new Datamap({
-                element: document.getElementById('map_place'),
-                  fills: {
-                    HIGH: '#afafaf',
-                    LOW: '#123456',
-                    MEDIUM: 'blue',
-                    UNKNOWN: 'rgb(0,0,0)',
-                    defaultFill: 'grey'
-                  },
-                  data: dataset
+              element: document.getElementById('map_place'),
+                fills: {
+                  defaultFill: 'grey'
+                },
+                data: mapDataset,
+                geographyConfig: {
+                  highlightOnHover: true,
+                  highlightFillColor: "black",
+                  popupTemplate: function(geo, dataset) {
+                      // console.log(geo.properties.name)
+                      console.log(dataset.Footprint)
+                      return ['<div class="hoverinfo">' +
+                              'Footprint (in gha/capita) of ' + geo.properties.name,
+                              ': ' + dataset.Footprint,
+                              '</div>'].join('');
+                  }
+                },
+                done: function(countryMap) {
+                  // on click function to create a groupedd barchart with country data
+                  countryMap.svg.selectAll("groupedbarchart").on("click", function (geo) {
+                    d3v5.selectAll("body").remove();
+                    drawBar(dataset, chartPad);
+                  })
+                }
 
 
-                });
+
+              });
 
 };
 
 
 
 
-function drawBar(dataset, chartPad, limit) {
+function drawBar(barDataset, chartPad, limit) {
 
   // create the svg field
   var svg = d3v5.select("body")
@@ -155,9 +197,7 @@ function drawBar(dataset, chartPad, limit) {
 
 
   // create x, y scaling for placing data in svg pixels
-  var xScale = getXscale(ageLimit, chartPad, dataset);
-
-  // var xScale2 = getXscale2(xScale);
+  var xScale = getXscale(chartPad);
 
   var yScale = getYscale(ageLimit, chartPad);
 
@@ -187,7 +227,7 @@ function drawBar(dataset, chartPad, limit) {
 
   // create the bars
   var rect = svg.selectAll("rect")
-                .data([dataset, dataset])
+                .data([barDataset, barDataset])
                 .enter()
                 .append("rect")
                 .attr("class", "bar")
@@ -216,10 +256,10 @@ function drawBar(dataset, chartPad, limit) {
 
                   let string = i === 0 ? "Average_Life_Expectancy" : "Inequality-adjusted_Life_Expectancy";
                   if (string == "Average_Life_Expectancy") {
-                    return "red"
+                    return "purple"
                   }
                   else {
-                    return "yellow"
+                    return "pink"
                   };
 
                 })
@@ -250,7 +290,7 @@ function drawBar(dataset, chartPad, limit) {
      .text("Life expectancy");
 
 
-  country = dataset[0].Country;
+  country = barDataset[0].Country;
 
 
   // create x-axis label
@@ -277,15 +317,10 @@ function drawBar(dataset, chartPad, limit) {
 };
 
 
-function getXscale(limit, chartPad, dataset) {
-
-  var xScale = d3v5.scaleLinear()
-                   .domain([0, 1])
-                   .range([0, chartPad.w - chartPad.left - 10]);
-
-  xScale = d3v5.scaleBand()
-              .domain(["Average_Life_Expectancy", "Inequality-adjusted_Life_Expectancy"])
-              .range([100, 400]);
+function getXscale(chartPad) {
+  var xScale = d3v5.scaleBand()
+                   .domain(["Average_Life_Expectancy", "Inequality-adjusted_Life_Expectancy"])
+                   .range([chartPad.xScaleRangeL, chartPad.xScaleRangeR]);
 
   return xScale;
 
