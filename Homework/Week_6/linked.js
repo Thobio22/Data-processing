@@ -32,7 +32,8 @@ window.onload = function() {
       right: 700,
       betweenBar: 10,
       xScaleRangeL: 100,
-      xScaleRangeR: 400
+      xScaleRangeR: 400,
+      ageLimit: 100
     };
 
 
@@ -44,7 +45,7 @@ window.onload = function() {
     drawMap(mapDataset, dataset, chartPad)
 
     // draw grouped barchart based on given dataset
-    drawBar(dataset, chartPad);
+    drawBar(dataset, chartPad, mapDataset, "AFG");
 
 
 
@@ -104,14 +105,14 @@ function getMapDataset(dataset) {
   var countryData = {};
 
   mapISO.forEach(function(d, i) {
-      countryData[d] = {
+      countryData[d] = [{
         "Country": dataset[i]["Country"],
         "HPI": dataset[i]["HPI_Rank"],
         "Footprint": dataset[i]["Footprint_(gha\/capita)"],
         "AvLifeExp": dataset[i]["Average_Life_Expectancy"],
         "AdjLifeExp": dataset[i]["Inequality-adjusted_Life_Expectancy"]
-      }
-    });
+      }]
+  });
 
   // create fillcolor for map based on footprint
   var colorScale = function(footprint) {
@@ -171,7 +172,7 @@ function drawMap(mapDataset, barDataset, chartPad) {
                   // on click function to create a groupedd barchart with country data
                   countryMap.svg.selectAll("groupedbarchart").on("click", function (geo) {
                     d3v5.selectAll("body").remove();
-                    drawBar(dataset, chartPad);
+                    drawBar(barDataset, chartPad, mapDataset, geo.id);
                   })
                 }
 
@@ -184,7 +185,7 @@ function drawMap(mapDataset, barDataset, chartPad) {
 
 
 
-function drawBar(barDataset, chartPad, limit) {
+function drawBar(barDataset, chartPad, mapDataset) {
 
   // create the svg field
   var svg = d3v5.select("body")
@@ -193,13 +194,10 @@ function drawBar(barDataset, chartPad, limit) {
               .attr("height", chartPad.h);
 
 
-  var ageLimit = 100;
-
-
   // create x, y scaling for placing data in svg pixels
   var xScale = getXscale(chartPad);
 
-  var yScale = getYscale(ageLimit, chartPad);
+  var yScale = getYscale(chartPad);
 
 
   // define x and y axis
@@ -327,10 +325,10 @@ function getXscale(chartPad) {
 };
 
 
-function getYscale(limit, chartPad) {
+function getYscale(chartPad) {
 
   var yScale = d3v5.scaleLinear()
-                 .domain([0, limit])
+                 .domain([0, chartPad.ageLimit])
                  .range([chartPad.h - chartPad.bottom, chartPad.top]);
 
   return yScale;
