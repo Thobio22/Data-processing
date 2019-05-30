@@ -42,7 +42,7 @@ window.onload = function() {
     // clicked_dataset will be what country will be selected. > linked view
     var mapDataset = getMapDataset(dataset);
 
-    drawMap(mapDataset, dataset, chartPad)
+    drawMap(mapDataset, dataset, chartPad);
 
     // draw grouped barchart based on given dataset
     drawBar(dataset, chartPad, mapDataset, "AFG");
@@ -52,36 +52,8 @@ window.onload = function() {
 
   })
 
-
-
-
-
-
-
-
 };
 
-
-// function addData(regionData, dataset) {
-//   for (i in dataset) {
-//     for (j in dataset[i]) {
-//       let region = dataset[i][j]["Region"];
-//
-//       if (region in dataset) {
-//         dataset[region].push({
-//           "Country": dataset[i][j].Country,
-//           "Region": dataset[i][j].Region,
-//           "HPI Rank": dataset[i][j].HPI Rank,
-//           "Average Life Expectancy": dataset[i][j].,
-//           "Footprint (gha\/capita)": dataset[i][j].,
-//           "Inequality of Outcomes": dataset[i][j].,
-//           "Inequality-adjusted Life Expectancy": dataset[i][j].,
-//           "Population": HPI Rank
-//         })
-//       };
-//     };
-//   };
-// };
 
 function getMapDataset(dataset) {
 
@@ -144,11 +116,19 @@ function getMapDataset(dataset) {
         countryData[d]["fillcolor"] = colorScale(countryData[d].Footprint)
   });
 
+return countryData
 
 };
 
 
 function drawMap(mapDataset, barDataset, chartPad) {
+
+  console.log(mapDataset)
+
+  for (i in Object.keys(mapDataset)){
+    console.log(i)
+  };
+
   // draw map
   var linkedMap = new Datamap({
               element: document.getElementById('map_place'),
@@ -172,7 +152,11 @@ function drawMap(mapDataset, barDataset, chartPad) {
                   // on click function to create a groupedd barchart with country data
                   countryMap.svg.selectAll("groupedbarchart").on("click", function (geo) {
                     d3v5.selectAll("body").remove();
-                    drawBar(barDataset, chartPad, mapDataset, geo.id);
+                    for (i in Object.keys(mapDataset)) {
+                      if (i == geo.id) {
+                        drawBar(barDataset[i], chartPad, mapDataset, geo.id);
+                      }
+                    }
                   })
                 }
 
