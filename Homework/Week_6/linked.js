@@ -123,12 +123,6 @@ return countryData
 
 function drawMap(mapDataset, barDataset, chartPad) {
 
-  console.log(mapDataset)
-
-  for (i in Object.keys(mapDataset)){
-    console.log(i)
-  };
-
   // draw map
   var linkedMap = new Datamap({
               element: document.getElementById('map_place'),
@@ -141,10 +135,9 @@ function drawMap(mapDataset, barDataset, chartPad) {
                   highlightFillColor: "black",
                   popupTemplate: function(geo, dataset) {
                       // console.log(geo.properties.name)
-                      console.log(dataset.Footprint)
                       return ['<div class="hoverinfo">' +
                               'Footprint (in gha/capita) of ' + geo.properties.name,
-                              ': ' + dataset.Footprint,
+                              ': ' + dataset[0].Footprint,
                               '</div>'].join('');
                   }
                 },
@@ -153,6 +146,7 @@ function drawMap(mapDataset, barDataset, chartPad) {
                   countryMap.svg.selectAll("groupedbarchart").on("click", function (geo) {
                     d3v5.selectAll("body").remove();
                     for (i in Object.keys(mapDataset)) {
+                      console.log(i)
                       if (i == geo.id) {
                         drawBar(barDataset[i], chartPad, mapDataset, geo.id);
                       }
