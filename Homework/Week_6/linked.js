@@ -163,7 +163,7 @@ function drawMap(mapDataset, barDataset, chartPad) {
 
 
 
-function drawBar(barDataset, chartPad, mapDataset) {
+function drawBar(barDataset, chartPad, mapDataset, countryISO) {
 
   // create the svg field
   var svg = d3v5.select("body")
@@ -266,16 +266,13 @@ function drawBar(barDataset, chartPad, mapDataset) {
      .text("Life expectancy");
 
 
-  country = barDataset[0].Country;
-
-
   // create x-axis label
   svg.append("text")
      .attr("class", "x label")
      .attr("text-anchor", "end")
      .attr("x", chartPad.w / 2)
      .attr("y", chartPad.h - 50)
-     .text(country);
+     .text(countryISO);
 
 
   // create y-axis label
