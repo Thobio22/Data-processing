@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # Name: Thomas Verouden
 # Student number: 10779272
+
+
 """
 This script cleans an input dataset with pandas and outputs a CSV file with
 visualised population and country details
